@@ -14,15 +14,8 @@ class Rental:
             'd': {'nama': 'Suzuki Gixxer', 'harga/h': 275000}
         }
         
-        self.paket_tambahan = {
-            'a': {'nama': 'Supir Professional', 'harga': 150000},
-            'b': {'nama': 'Asuransi Lengkap', 'harga': 75000},
-            'c': {'nama': 'Dengan BBM', 'harga': 200000},
-            'd': {'nama': 'Baby Seat', 'harga': 25000}
-        }
-        
         self.pesanan = []
-        self.total_harga = 0
+        self.total_harga_rental = 0
     def tampilkan_header(self):
         print("=" * 50)
         print("*** Velocity Rental ***")
@@ -40,15 +33,9 @@ class Rental:
         print("\nList Montor Rental")
         print("-" * 50)
         for key, value in self.montor.items():
-            print(f"{key}. {value['nama']} : Rp {value['harga/h']:,}/hari")
+            print(f"{key}. {value['nama']} : Rp {value['harga/h']:,}")
         print()
         
-    def tampilkan_paket_tambahan(self):
-        print("\nPaket Tambahan")
-        print("-" * 50)
-        for key, value in self.paket_tambahan.items():
-            print(f"{key}. {value['nama']} : Rp {value['harga']:,}")
-        print()
         
     def tampilkan_promo(self):
         print("\nPromo!!")
@@ -63,7 +50,7 @@ class Rental:
         while True:
             try:
                 pilihan = int(input("Pilih mobil (1) atau montor (2): "))
-                if pilihan == 1 or 2:
+                if pilihan in [1, 2]:
                     break
                 print("Masukkan angka yang valid.")
             except ValueError:
@@ -76,10 +63,14 @@ class Rental:
         
         # Pilih mobil
         while True:
-            pilihan_mobil = input("Pilih mobil or montor (a/b/c/d): ").lower()
-            if pilihan_mobil in self.mobil or pilihan_mobil in self.montor:
+            if pilihan == 1 in self.mobil :
+                pilihan_mobil = input("Pilih  (a/b/c/d): ").lower()
                 break
-            print("Pilihan tidak valid. Silakan pilih a, b, c, atau d.")
+
+            elif pilihan == 2 in self.montor:
+                pilihan_montor = input("Pilih  (a/b/c/d): ").lower()
+                break
+                print("Pilihan tidak valid. Silakan pilih a, b, c, atau d.")
             
         # Input jumlah hari
         while True:
@@ -92,38 +83,27 @@ class Rental:
                 print("Masukkan angka yang valid.")
                 
          # Hitung harga mobil
-        harga_mobil = self.mobil[pilihan_mobil]['harga/h'] * jumlah_hari
-        self.pesanan.append({
-            'item': self.mobil or self.montor[pilihan_mobil]['nama'],
-            'harga': harga_mobil,
-            'jumlah': jumlah_hari,
-            'tipe': 'motor'
-        })
+        if pilihan == 1 : 
+            harga_mobil = self.mobil[pilihan_mobil]['harga/h'] * jumlah_hari 
+            self.pesanan.append({
+                    'item': self.mobil[pilihan_mobil]['nama'],
+                    'harga': harga_mobil,
+                    'jumlah': jumlah_hari,
+                    'tipe': 'mobil'
+            })
+        else:
+            harga_mobil = self.montor[pilihan_montor]['harga/h'] * jumlah_hari
+            self.pesanan.append({
+                    'item': self.montor[pilihan_montor]['nama'],
+                    'harga': harga_mobil,
+                    'jumlah': jumlah_hari,
+                    'tipe': 'motor'
+            })
         
-        self.total_harga += harga_mobil
-        
-        # paket tambahan
-        print("\nApakah ingin menambah paket layanan?")
-        self.tampilkan_paket_tambahan()
-        
-        while True:
-            tambah_layanan = input("Tambah layanan? (y/n): ").lower()
-            if tambah_layanan == 'y':
-                pilihan_layanan = input("Pilih layanan (a/b/c/d): ").lower()
-                if pilihan_layanan in self.paket_tambahan:
-                    harga_layanan = self.paket_tambahan[pilihan_layanan]['harga']
-                    self.pesanan.append({
-                        'item': self.paket_tambahan[pilihan_layanan]['nama'],
-                        'harga': harga_layanan,
-                        'jumlah': 1,
-                        'tipe': 'layanan'
-                    })
-                    self.total_harga += harga_layanan
-                    print(f"Layanan {self.paket_tambahan[pilihan_layanan]['nama']} ditambahkan.")
-                else:
-                    print("Pilihan tidak valid.")
-            else:
-                break
+        if pilihan == 1:
+            self.total_harga_rental += harga_mobil
+        else:
+            self.total_harga_rental += harga_mobil
             
              # Hitung diskon
         diskon = 0
@@ -134,8 +114,8 @@ class Rental:
             diskon = 0.1
             print("Selamat! Anda mendapatkan diskon 10%")
             
-        jumlah_diskon = self.total_harga * diskon
-        total_setelah_diskon = self.total_harga - jumlah_diskon
+        jumlah_diskon = self.total_harga_rental * diskon
+        total_setelah_diskon = self.total_harga_rental - jumlah_diskon
         
          # Tampilkan struk
         print("\n" + "=" * 50)
@@ -145,16 +125,16 @@ class Rental:
         
         for item in self.pesanan:
             #ternary operator 'hari' if item['tipe'] == 'motor' else 'unit'
-            print(f"{item['item']} ({item['jumlah']} {'hari' if item['tipe'] == 'motor' else 'unit'}) : Rp {item['harga']:,}")
+            print(f"{item['item']} ({item['jumlah']} {'hari' if item['tipe'] == 'mobil' else 'motor'}) : Rp {item['harga']:,}")
         
         print("-" * 50)
-        print(f"Subtotal      : Rp {self.total_harga:,}")
+        print(f"Subtotal      : Rp {self.total_harga_rental:,}")
         print(f"Diskon        : Rp {jumlah_diskon:,}")
         print(f"Total         : Rp {total_setelah_diskon:,}")
         while True:
             try:
-                jumlah_DP = int(input("Berikan DP terlebih dahulu minimal 5 % dari harga total: "))
-                if jumlah_DP > 0:
+                jumlah_DP = int(input("Berikan DP terlebih dahulu minimal 20 % dari harga total: "))
+                if jumlah_DP >= total_setelah_diskon * 0.2:
                     break
                 print("Masukkan jumlah DP yang valid.")
             except ValueError:
