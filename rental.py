@@ -11,14 +11,14 @@ except FileNotFoundError:
 
 print("""
 ======================================================
-      /nSelamat Datang di Rental Kendaraan Warjoeg
+      Selamat Datang di  Velocity Rental Motor
 =======================================================
       """)
     
 pertanyaan = str(input(" rental (y) atau kembalikan kendaraan(n)? (y/n): "))
 
 if pertanyaan == 'n':
-    print("Rental Kendaraan Warjoeg")
+    print("Velocity Rental Motor")
     id = str(input("Masukkan id Kendaraan: "))
     
     transaksi = None
@@ -50,7 +50,7 @@ else:
 
     print("""
     =======================================
-         *** Rental Kendaraan Warjoeg ***
+         *** Velocity Rental Motor ***
     =======================================
     Jenis Mobil:
     a. Avanza        : Rp 350.000 / hari
@@ -156,8 +156,9 @@ else:
         kurang = total - bayar
         print("Kekurangan : Rp", kurang)
         print("Status     : BELUM LUNAS ❌")
+        print("Pelunasan Dilakukan Ketika Mengambil Kendaraan")
 
-    print("===================================")
+    print("=======================================================")
 
    
     
